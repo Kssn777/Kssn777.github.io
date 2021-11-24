@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="hui"><meta name="renderer" content="webkit"><meta name="copyright" content="hui"><meta name="keywords" content="hui"><meta name="description" content=""><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Mysql的事务日志 · hui's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 5.4.0"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/cat.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">hui</div><div class="profile-signature">for me</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">hui's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">Mysql的事务日志</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2021-11-24</span></span><span class="post-intro-tags"><a class="intro-tag fa fa-tag" href="javascript:void(0)" date-tags="mysql"> mysql</a></span></div><div class="post-intro-read"><span> Word count: <span class="post-count">987</span> | Reading time: <span class="post-count">3</span>min</span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p>Mysql的常见的事务日志有这么几个：redo log，undo log，bin log。</p>
+<h3 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h3><p>先讲讲undo log吧。我们都知道，mysql在执行事务时，是可以进行回滚操作的，那么这个回滚操作究竟是如何实现的呢？<br>这是通过<strong>MVCC(Multi Version Concurrency Control，多版本并发控制</strong>)实现的，其实就是每行记录都有不同的版本，形成一条版本链，可以通过无锁的方式访问到不同版本的数据，而MVCC就是通过undo log实现的。<br>简单理解，undo log就是记录了事务中每一个操作的<strong>逆向操作</strong>，比如说，在t=1时，增加了一行记录，那么undo log就会记录一句：<strong>删除这一行操作</strong>。<br>但是，InnoDB并不会真的会为每一个行记录去开辟一个新空间去存储不同版本的数据，也就是说，B+树的叶子结点只会存储最新版本的数据，只不过InnoDB可以根据undo log去得到行记录的不同版本。</p>
+<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>该日志是InnoDB特有的日志，记录了哪个数据页进行了哪些改动，是一种物理日志，redolog是为了实现事务的持久性的，每当事务提交的时候，就把redo log持久化到硬盘上。redo log会有个重做日志组，里面有redo log 1，redo log 2等等，每次写入redo log时是顺序写的，比如说redo log1写满了，就会写到redo log 2，如果全满了，就会把脏页刷回磁盘先，因此redo log写入磁盘速度是比较快的。</p>
+<p>carsh - safe的原理也是因为redo log</p>
+<h3 id="bin-log"><a href="#bin-log" class="headerlink" title="bin log"></a>bin log</h3><p>bin log也称归档日志，主要是用于主从复制和恢复，是一种逻辑日志，可以理解为存储了一条sql语句，而该日志是在Server层，也就是说只要是Mysql，都会有bin log。bin log是随机写入磁盘的，因此bin log可以认为是无限大的。</p>
+<h2 id="为什么binlog不能用于crash-safe"><a href="#为什么binlog不能用于crash-safe" class="headerlink" title="为什么binlog不能用于crash-safe"></a>为什么binlog不能用于crash-safe</h2><p>假设我们只有binlog，如果在事务提交前，binlog写成功之后，发生了crash，那么当数据库恢复之后，binlog就会多出来提交前的数据，造成数据不一致，如果事务提交了之后，binlog没有写完，发生了crash，数据库恢复之后，就会少了提交后的数据，又造成了数据不一致，因此仅仅用bin log是不可以达到crash-safe。</p>
+<h2 id="那么redo-log和bin-log怎么配合呢"><a href="#那么redo-log和bin-log怎么配合呢" class="headerlink" title="那么redo log和bin log怎么配合呢"></a>那么redo log和bin log怎么配合呢</h2><p>经过上面的分析，我们知道，一定要redo log 和 bin log互相配合才可以达到crash-safe的能力，数据库恢复使用的是redo log，而从服务器要根据bin log实现主从复制，同时我们还要保证redo log和bin log的逻辑一致，这样才能保证数据的一致性。</p>
+<p>这里我们就要讲到<strong>两阶段提交</strong>了，指的是，事务提交时需要两个阶段，首先redo log先写到磁盘，此时事务状态为prepare，然后到bin log写盘，成功后事务状态标志位commit，此时才算事务提交成功，任何一个节点出错，都会进行回滚。</p>
+<p>那么为什么要两阶段提交呢，互相独立不行吗？<br>我们设想一下，如果redo log写盘成功，bin log没有成功，那么当数据库发生crash之后，主数据库会利用redo log进行数据恢复，它的数据是新的，而从数据库会利用bin log进行主从复制，从数据库的数据就是旧的，这样就会造成数据不一致。<br>如果bin log写盘成功，而redo log写盘失败，当crash之后，主数据库的数据就是旧的，而从数据库的数据就是新的，也会数据不一致，因此两阶段提交就可以解决这种情况。</p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://test.com">hui</a></p><p> <span>Link:  </span><a href="http://test.com/2021/11/24/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">http://test.com/2021/11/24/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2021/11/24/Mysql%E7%9A%84%E5%90%84%E7%A7%8D%E7%B4%A2%E5%BC%95/" title="Mysql的各种索引"><span>< PreviousPost</span><br><span class="prevTitle">Mysql的各种索引</span></a><a class="nextSlogan" href="/2021/11/24/jdk1-8hashmap%E8%A7%A3%E6%9E%9002/" title="jdk1.8hashmap解析02"><span>NextPost ></span><br><span class="nextTitle">jdk1.8hashmap解析02</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a target="_blank" rel="noopener" href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undo-log"><span class="toc-number">1.</span> <span class="toc-text">undo log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redo-log"><span class="toc-number">2.</span> <span class="toc-text">redo log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bin-log"><span class="toc-number">3.</span> <span class="toc-text">bin log</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88binlog%E4%B8%8D%E8%83%BD%E7%94%A8%E4%BA%8Ecrash-safe"><span class="toc-number"></span> <span class="toc-text">为什么binlog不能用于crash-safe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%A3%E4%B9%88redo-log%E5%92%8Cbin-log%E6%80%8E%E4%B9%88%E9%85%8D%E5%90%88%E5%91%A2"><span class="toc-number"></span> <span class="toc-text">那么redo log和bin log怎么配合呢</span></a></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
