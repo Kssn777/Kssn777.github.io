@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>LeetCode做题记录02</title>
-    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9502/</url>
-    <content><![CDATA[<h3 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h3><p>点击<a href="https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/">这里</a>查看原题</p>
-<p><img src="https://img-blog.csdnimg.cn/144a333b64d748108b390290c0f71b4e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实整体思路很简单，用一个now变量记录当前遍历的节点，用一个prev变量记录当前节点的上一个节点，再用一个next变量记录now变量的下一个节点，就可以这样操作了：next节点先保存着now节点的下一个节点，然后把now节点的next指向prev达到反向的目的，最后把next赋值给now即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        ListNode prev = <span class="keyword">null</span>,now = head;</span><br><span class="line">        <span class="keyword">while</span>(now!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode next = now.next;</span><br><span class="line">            now.next = prev;</span><br><span class="line">            prev = now;</span><br><span class="line">            now = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> prev;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>虽然是简单题，但是好像挺常考的，要注意一下。</p>
-]]></content>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LeetCode做题记录01</title>
     <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9501/</url>
     <content><![CDATA[<h1 id="允许重复选择元素的组合"><a href="#允许重复选择元素的组合" class="headerlink" title="允许重复选择元素的组合"></a>允许重复选择元素的组合</h1><p>点击<a href="https://leetcode-cn.com/problems/Ygoe9J/">这里</a>查看原题</p>
@@ -32,15 +19,13 @@
       </tags>
   </entry>
   <entry>
-    <title>LeetCode做题记录05</title>
-    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9505/</url>
-    <content><![CDATA[<h2 id="二叉树的坡度"><a href="#二叉树的坡度" class="headerlink" title="二叉树的坡度"></a>二叉树的坡度</h2><p>点击<a href="https://leetcode-cn.com/problems/binary-tree-tilt/">这里</a>查看原题</p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，计算 <strong>整个树</strong> 的坡度 。</p>
-<p>一个树的 <strong>节点的坡度</strong> 定义即为，该节点左子树的节点之和和右子树节点之和的 <strong>差的绝对值</strong> 。如果没有左子树的话，左子树的节点之和为 0 ；没有右子树的话也是一样。空结点的坡度是 0 。<br><strong>整个树</strong> 的坡度就是其所有节点的坡度之和。</p>
-<p><img src="https://img-blog.csdnimg.cn/b30e0387ddf14c72be40e4e14e5960e5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>既然我们要求所有节点的坡度，那么我们必定要遍历每一个节点，三种方法，前序中序后序，而我们发现，叶子结点的坡度必定为0，因此我们可以从叶子结点来出发，既然每一个结点的坡度都等于其左子树所有节点的和与其右子树所有节点的和之差的绝对值，那么我们就先使用后序遍历算法来求。</p>
-<p>在后序遍历中，我们可以做一点小改进：只要遇到了叶子结点，我们就直接返回，如果没有遇到叶子结点，就把当前节点的值加上其左节点的与右结点的值，因为我们是从叶子几点出发！因此在之后的递归中，每一个非叶子结点已经保存了其左子树所有节点的和与其右子树所有节点的和了！</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findTilt</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        postorder(root);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postorder</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> ;</span><br><span class="line">        <span class="comment">//遇到叶子结点返回</span></span><br><span class="line">        <span class="keyword">if</span>(root.left == <span class="keyword">null</span> &amp;&amp; root.right==<span class="keyword">null</span>) <span class="keyword">return</span>; </span><br><span class="line">        postorder(root.left);</span><br><span class="line">        postorder(root.right);  </span><br><span class="line">        <span class="comment">//注意，如果左子树或者右子树为空，我们就认为其坡度为0，因此用一个三目运算来代替 </span></span><br><span class="line">        root.val = root.val + </span><br><span class="line">        (root.left==<span class="keyword">null</span>?<span class="number">0</span>:root.left.val)</span><br><span class="line">         + (root.right==<span class="keyword">null</span>?<span class="number">0</span>:root.right.val);</span><br><span class="line">        </span><br><span class="line">        ans += Math.abs((root.left==<span class="keyword">null</span>?<span class="number">0</span>:root.left.val) - (root.right==<span class="keyword">null</span>?<span class="number">0</span>:root.right.val));</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>LeetCode做题记录02</title>
+    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9502/</url>
+    <content><![CDATA[<h3 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h3><p>点击<a href="https://leetcode-cn.com/problems/fan-zhuan-lian-biao-lcof/">这里</a>查看原题</p>
+<p><img src="https://img-blog.csdnimg.cn/144a333b64d748108b390290c0f71b4e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>其实整体思路很简单，用一个now变量记录当前遍历的节点，用一个prev变量记录当前节点的上一个节点，再用一个next变量记录now变量的下一个节点，就可以这样操作了：next节点先保存着now节点的下一个节点，然后把now节点的next指向prev达到反向的目的，最后把next赋值给now即可。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        ListNode prev = <span class="keyword">null</span>,now = head;</span><br><span class="line">        <span class="keyword">while</span>(now!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            ListNode next = now.next;</span><br><span class="line">            now.next = prev;</span><br><span class="line">            prev = now;</span><br><span class="line">            now = next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> prev;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>虽然是简单题，但是好像挺常考的，要注意一下。</p>
 ]]></content>
       <tags>
         <tag>LeetCode</tag>
@@ -59,6 +44,35 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LRUCache</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> key;</span><br><span class="line">        <span class="keyword">int</span> value;</span><br><span class="line">        Node prev;</span><br><span class="line">        Node next;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Node</span><span class="params">(<span class="keyword">int</span> key,<span class="keyword">int</span> value)</span></span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.key = key;</span><br><span class="line">            <span class="keyword">this</span>.value = value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> Node head;</span><br><span class="line">    <span class="keyword">private</span> Node tail;</span><br><span class="line">    <span class="keyword">private</span> HashMap&lt;Integer,Node&gt; map;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> capacity;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;<span class="comment">//已经放入的数据的数量</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LRUCache</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap(capacity);</span><br><span class="line">        <span class="keyword">this</span>.capacity = capacity;</span><br><span class="line">        <span class="keyword">this</span>.size = <span class="number">0</span>;</span><br><span class="line">        head = <span class="keyword">new</span> Node();<span class="comment">//哑头结点</span></span><br><span class="line">        tail = <span class="keyword">new</span> Node();<span class="comment">//哑尾结点</span></span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;<span class="comment">//头尾相连</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> key)</span> </span>&#123;</span><br><span class="line">        Node n = map.get(key);</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="keyword">null</span>) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            removeNode(n);</span><br><span class="line">            addNode(n);</span><br><span class="line">            <span class="keyword">return</span> n.value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(<span class="keyword">int</span> key, <span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        Node n = map.get(key);</span><br><span class="line">        <span class="keyword">if</span>(n==<span class="keyword">null</span>)&#123;</span><br><span class="line">            addNode(<span class="keyword">new</span> Node(key,value));</span><br><span class="line">            <span class="keyword">if</span>(size&gt;capacity) removeNode(head.next);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            removeNode(n);</span><br><span class="line">            addNode(<span class="keyword">new</span> Node(key,value));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeNode</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">        node.prev.next = node.next;</span><br><span class="line">        node.next.prev = node.prev;</span><br><span class="line">        map.remove(node.key);</span><br><span class="line">        --size;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addNode</span><span class="params">(Node node)</span></span>&#123;</span><br><span class="line">        tail.prev.next = node;</span><br><span class="line">        node.prev = tail.prev;</span><br><span class="line">        node.next = tail;</span><br><span class="line">        tail.prev = node;</span><br><span class="line">        map.put(node.key,node);</span><br><span class="line">        ++size;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>讲讲哑结点的设置的原因吧，如果我们不设置哑结点，我们在删除和添加元素的时候都要判断一下还未插入数据的情况，很烦，加入哑结点就可以避免这种情况。</p>
+]]></content>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode做题记录03</title>
+    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9503/</url>
+    <content><![CDATA[<h3 id="不同路径"><a href="#不同路径" class="headerlink" title="不同路径"></a>不同路径</h3><p>点击<a href="https://leetcode-cn.com/problems/unique-paths/">这里</a>查看原题<br><img src="https://img-blog.csdnimg.cn/bd0a0b0ca1de4e4982d086f27f57c0f0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>类似这种有多少条路径/多少种方法/多少XXX的题目，类似于策划类的算法题，一般都能用动态规划来解决，而动态规划最重要是写出其状态转移方程，我们回到题目，题目的入参是m和n，因此我们可以设定一个函数f(m,n)，其表示以m为行数以n为列数的棋盘上，机器人从左上角出发每次只能向右走或者向下走一步，一共有f(m,n)种路径。</p>
+<p>假设棋盘是三行两列，即m=3，n=2，如果机器人是向下走，那么m就减一，相当于机器人从两行两列的棋盘的左上角出发，也就是f(2,2)，假设机器人是向右走，那么n就减一，相当于机器人从三行一列的棋盘的左上角出发，也就是f(3,1)，我们可以发现，f(3,2)=f(2,2)+f(3,1)，而且，当m=1或者n=1时，函数值为1，也就是只有一种方法了，因此我们可以写出状态转移方程：</p>
+<p>$ f(m,n)=f(m-1,n)+f(m,n-1),m＞1或n＞1 $<br>$f(m,n)=1,else$​</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> dp[][] = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">0</span> || j==<span class="number">0</span>) dp[i][j] = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span> dp[i][j] = dp[i-<span class="number">1</span>][j] + dp[i][j-<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m-<span class="number">1</span>][n-<span class="number">1</span>];   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一道非常常规的动态规划题目，比较简单</p>
+]]></content>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LeetCode做题记录05</title>
+    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9505/</url>
+    <content><![CDATA[<h2 id="二叉树的坡度"><a href="#二叉树的坡度" class="headerlink" title="二叉树的坡度"></a>二叉树的坡度</h2><p>点击<a href="https://leetcode-cn.com/problems/binary-tree-tilt/">这里</a>查看原题</p>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个二叉树，计算 <strong>整个树</strong> 的坡度 。</p>
+<p>一个树的 <strong>节点的坡度</strong> 定义即为，该节点左子树的节点之和和右子树节点之和的 <strong>差的绝对值</strong> 。如果没有左子树的话，左子树的节点之和为 0 ；没有右子树的话也是一样。空结点的坡度是 0 。<br><strong>整个树</strong> 的坡度就是其所有节点的坡度之和。</p>
+<p><img src="https://img-blog.csdnimg.cn/b30e0387ddf14c72be40e4e14e5960e5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>既然我们要求所有节点的坡度，那么我们必定要遍历每一个节点，三种方法，前序中序后序，而我们发现，叶子结点的坡度必定为0，因此我们可以从叶子结点来出发，既然每一个结点的坡度都等于其左子树所有节点的和与其右子树所有节点的和之差的绝对值，那么我们就先使用后序遍历算法来求。</p>
+<p>在后序遍历中，我们可以做一点小改进：只要遇到了叶子结点，我们就直接返回，如果没有遇到叶子结点，就把当前节点的值加上其左节点的与右结点的值，因为我们是从叶子几点出发！因此在之后的递归中，每一个非叶子结点已经保存了其左子树所有节点的和与其右子树所有节点的和了！</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findTilt</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        postorder(root);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postorder</span><span class="params">(TreeNode root)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(root == <span class="keyword">null</span>) <span class="keyword">return</span> ;</span><br><span class="line">        <span class="comment">//遇到叶子结点返回</span></span><br><span class="line">        <span class="keyword">if</span>(root.left == <span class="keyword">null</span> &amp;&amp; root.right==<span class="keyword">null</span>) <span class="keyword">return</span>; </span><br><span class="line">        postorder(root.left);</span><br><span class="line">        postorder(root.right);  </span><br><span class="line">        <span class="comment">//注意，如果左子树或者右子树为空，我们就认为其坡度为0，因此用一个三目运算来代替 </span></span><br><span class="line">        root.val = root.val + </span><br><span class="line">        (root.left==<span class="keyword">null</span>?<span class="number">0</span>:root.left.val)</span><br><span class="line">         + (root.right==<span class="keyword">null</span>?<span class="number">0</span>:root.right.val);</span><br><span class="line">        </span><br><span class="line">        ans += Math.abs((root.left==<span class="keyword">null</span>?<span class="number">0</span>:root.left.val) - (root.right==<span class="keyword">null</span>?<span class="number">0</span>:root.right.val));</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>LeetCode</tag>
@@ -107,37 +121,6 @@
 ]]></content>
       <tags>
         <tag>Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>LeetCode做题记录03</title>
-    <url>/2021/11/24/LeetCode%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%9503/</url>
-    <content><![CDATA[<h3 id="不同路径"><a href="#不同路径" class="headerlink" title="不同路径"></a>不同路径</h3><p>点击<a href="https://leetcode-cn.com/problems/unique-paths/">这里</a>查看原题<br><img src="https://img-blog.csdnimg.cn/bd0a0b0ca1de4e4982d086f27f57c0f0.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAS3Nzbj8=,size_20,color_FFFFFF,t_70,g_se,x_16" alt="在这里插入图片描述"></p>
-<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p>类似这种有多少条路径/多少种方法/多少XXX的题目，类似于策划类的算法题，一般都能用动态规划来解决，而动态规划最重要是写出其状态转移方程，我们回到题目，题目的入参是m和n，因此我们可以设定一个函数f(m,n)，其表示以m为行数以n为列数的棋盘上，机器人从左上角出发每次只能向右走或者向下走一步，一共有f(m,n)种路径。</p>
-<p>假设棋盘是三行两列，即m=3，n=2，如果机器人是向下走，那么m就减一，相当于机器人从两行两列的棋盘的左上角出发，也就是f(2,2)，假设机器人是向右走，那么n就减一，相当于机器人从三行一列的棋盘的左上角出发，也就是f(3,1)，我们可以发现，f(3,2)=f(2,2)+f(3,1)，而且，当m=1或者n=1时，函数值为1，也就是只有一种方法了，因此我们可以写出状态转移方程：</p>
-<p>$ f(m,n)=f(m-1,n)+f(m,n-1),m＞1或n＞1 $<br>$f(m,n)=1,else$​</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">uniquePaths</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> dp[][] = <span class="keyword">new</span> <span class="keyword">int</span>[m][n];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(i == <span class="number">0</span> || j==<span class="number">0</span>) dp[i][j] = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span> dp[i][j] = dp[i-<span class="number">1</span>][j] + dp[i][j-<span class="number">1</span>]; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m-<span class="number">1</span>][n-<span class="number">1</span>];   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一道非常常规的动态规划题目，比较简单</p>
-]]></content>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Mysql的事务日志</title>
-    <url>/2021/11/24/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<p>Mysql的常见的事务日志有这么几个：redo log，undo log，bin log。</p>
-<h3 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h3><p>先讲讲undo log吧。我们都知道，mysql在执行事务时，是可以进行回滚操作的，那么这个回滚操作究竟是如何实现的呢？<br>这是通过<strong>MVCC(Multi Version Concurrency Control，多版本并发控制</strong>)实现的，其实就是每行记录都有不同的版本，形成一条版本链，可以通过无锁的方式访问到不同版本的数据，而MVCC就是通过undo log实现的。<br>简单理解，undo log就是记录了事务中每一个操作的<strong>逆向操作</strong>，比如说，在t=1时，增加了一行记录，那么undo log就会记录一句：<strong>删除这一行操作</strong>。<br>但是，InnoDB并不会真的会为每一个行记录去开辟一个新空间去存储不同版本的数据，也就是说，B+树的叶子结点只会存储最新版本的数据，只不过InnoDB可以根据undo log去得到行记录的不同版本。</p>
-<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>该日志是InnoDB特有的日志，记录了哪个数据页进行了哪些改动，是一种物理日志，redolog是为了实现事务的持久性的，每当事务提交的时候，就把redo log持久化到硬盘上。redo log会有个重做日志组，里面有redo log 1，redo log 2等等，每次写入redo log时是顺序写的，比如说redo log1写满了，就会写到redo log 2，如果全满了，就会把脏页刷回磁盘先，因此redo log写入磁盘速度是比较快的。</p>
-<p>carsh - safe的原理也是因为redo log</p>
-<h3 id="bin-log"><a href="#bin-log" class="headerlink" title="bin log"></a>bin log</h3><p>bin log也称归档日志，主要是用于主从复制和恢复，是一种逻辑日志，可以理解为存储了一条sql语句，而该日志是在Server层，也就是说只要是Mysql，都会有bin log。bin log是随机写入磁盘的，因此bin log可以认为是无限大的。</p>
-<h2 id="为什么binlog不能用于crash-safe"><a href="#为什么binlog不能用于crash-safe" class="headerlink" title="为什么binlog不能用于crash-safe"></a>为什么binlog不能用于crash-safe</h2><p>假设我们只有binlog，如果在事务提交前，binlog写成功之后，发生了crash，那么当数据库恢复之后，binlog就会多出来提交前的数据，造成数据不一致，如果事务提交了之后，binlog没有写完，发生了crash，数据库恢复之后，就会少了提交后的数据，又造成了数据不一致，因此仅仅用bin log是不可以达到crash-safe。</p>
-<h2 id="那么redo-log和bin-log怎么配合呢"><a href="#那么redo-log和bin-log怎么配合呢" class="headerlink" title="那么redo log和bin log怎么配合呢"></a>那么redo log和bin log怎么配合呢</h2><p>经过上面的分析，我们知道，一定要redo log 和 bin log互相配合才可以达到crash-safe的能力，数据库恢复使用的是redo log，而从服务器要根据bin log实现主从复制，同时我们还要保证redo log和bin log的逻辑一致，这样才能保证数据的一致性。</p>
-<p>这里我们就要讲到<strong>两阶段提交</strong>了，指的是，事务提交时需要两个阶段，首先redo log先写到磁盘，此时事务状态为prepare，然后到bin log写盘，成功后事务状态标志位commit，此时才算事务提交成功，任何一个节点出错，都会进行回滚。</p>
-<p>那么为什么要两阶段提交呢，互相独立不行吗？<br>我们设想一下，如果redo log写盘成功，bin log没有成功，那么当数据库发生crash之后，主数据库会利用redo log进行数据恢复，它的数据是新的，而从数据库会利用bin log进行主从复制，从数据库的数据就是旧的，这样就会造成数据不一致。<br>如果bin log写盘成功，而redo log写盘失败，当crash之后，主数据库的数据就是旧的，而从数据库的数据就是新的，也会数据不一致，因此两阶段提交就可以解决这种情况。</p>
-]]></content>
-      <tags>
-        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -194,6 +177,41 @@
       </tags>
   </entry>
   <entry>
+    <title>Mysql的事务日志</title>
+    <url>/2021/11/24/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<p>Mysql的常见的事务日志有这么几个：redo log，undo log，bin log。</p>
+<h3 id="undo-log"><a href="#undo-log" class="headerlink" title="undo log"></a>undo log</h3><p>先讲讲undo log吧。我们都知道，mysql在执行事务时，是可以进行回滚操作的，那么这个回滚操作究竟是如何实现的呢？<br>这是通过<strong>MVCC(Multi Version Concurrency Control，多版本并发控制</strong>)实现的，其实就是每行记录都有不同的版本，形成一条版本链，可以通过无锁的方式访问到不同版本的数据，而MVCC就是通过undo log实现的。<br>简单理解，undo log就是记录了事务中每一个操作的<strong>逆向操作</strong>，比如说，在t=1时，增加了一行记录，那么undo log就会记录一句：<strong>删除这一行操作</strong>。<br>但是，InnoDB并不会真的会为每一个行记录去开辟一个新空间去存储不同版本的数据，也就是说，B+树的叶子结点只会存储最新版本的数据，只不过InnoDB可以根据undo log去得到行记录的不同版本。</p>
+<h3 id="redo-log"><a href="#redo-log" class="headerlink" title="redo log"></a>redo log</h3><p>该日志是InnoDB特有的日志，记录了哪个数据页进行了哪些改动，是一种物理日志，redolog是为了实现事务的持久性的，每当事务提交的时候，就把redo log持久化到硬盘上。redo log会有个重做日志组，里面有redo log 1，redo log 2等等，每次写入redo log时是顺序写的，比如说redo log1写满了，就会写到redo log 2，如果全满了，就会把脏页刷回磁盘先，因此redo log写入磁盘速度是比较快的。</p>
+<p>carsh - safe的原理也是因为redo log</p>
+<h3 id="bin-log"><a href="#bin-log" class="headerlink" title="bin log"></a>bin log</h3><p>bin log也称归档日志，主要是用于主从复制和恢复，是一种逻辑日志，可以理解为存储了一条sql语句，而该日志是在Server层，也就是说只要是Mysql，都会有bin log。bin log是随机写入磁盘的，因此bin log可以认为是无限大的。</p>
+<h2 id="为什么binlog不能用于crash-safe"><a href="#为什么binlog不能用于crash-safe" class="headerlink" title="为什么binlog不能用于crash-safe"></a>为什么binlog不能用于crash-safe</h2><p>假设我们只有binlog，如果在事务提交前，binlog写成功之后，发生了crash，那么当数据库恢复之后，binlog就会多出来提交前的数据，造成数据不一致，如果事务提交了之后，binlog没有写完，发生了crash，数据库恢复之后，就会少了提交后的数据，又造成了数据不一致，因此仅仅用bin log是不可以达到crash-safe。</p>
+<h2 id="那么redo-log和bin-log怎么配合呢"><a href="#那么redo-log和bin-log怎么配合呢" class="headerlink" title="那么redo log和bin log怎么配合呢"></a>那么redo log和bin log怎么配合呢</h2><p>经过上面的分析，我们知道，一定要redo log 和 bin log互相配合才可以达到crash-safe的能力，数据库恢复使用的是redo log，而从服务器要根据bin log实现主从复制，同时我们还要保证redo log和bin log的逻辑一致，这样才能保证数据的一致性。</p>
+<p>这里我们就要讲到<strong>两阶段提交</strong>了，指的是，事务提交时需要两个阶段，首先redo log先写到磁盘，此时事务状态为prepare，然后到bin log写盘，成功后事务状态标志位commit，此时才算事务提交成功，任何一个节点出错，都会进行回滚。</p>
+<p>那么为什么要两阶段提交呢，互相独立不行吗？<br>我们设想一下，如果redo log写盘成功，bin log没有成功，那么当数据库发生crash之后，主数据库会利用redo log进行数据恢复，它的数据是新的，而从数据库会利用bin log进行主从复制，从数据库的数据就是旧的，这样就会造成数据不一致。<br>如果bin log写盘成功，而redo log写盘失败，当crash之后，主数据库的数据就是旧的，而从数据库的数据就是新的，也会数据不一致，因此两阶段提交就可以解决这种情况。</p>
+]]></content>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>intern()方法</title>
+    <url>/2021/11/25/intern()%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>这两天被一个问题困扰住：intern()的作用，这里解释一下。</p>
+<h2 id="JDK1-6"><a href="#JDK1-6" class="headerlink" title="JDK1.6"></a>JDK1.6</h2><p>在JDK1.6中，intern()是这样执行的：假设现在有”a”.intern()，就会先去找常量池中寻找有没有字面量为a的字符串，有的话直接返回该字符串在常量池的地址，没有的话就先创建一个，然后再返回在常量池中的地址。</p>
+<h2 id="JDK1-7"><a href="#JDK1-7" class="headerlink" title="JDK1.7"></a>JDK1.7</h2><p>在JDK1.7中，intern()是这样执行的：同样是上面的例子，当在常量池寻找不到时，就会记录<strong>首次出现</strong>该字面量的字符串的引用地址，然后返回该引用地址，如果有的话就直接返回。</p>
+<h2 id="For-Example"><a href="#For-Example" class="headerlink" title="For Example"></a>For Example</h2><p>举个例子周志明的《深入理解Java虚拟机》的例子：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String str1 = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;计算机&quot;</span>).append(<span class="string">&quot;软件&quot;</span>).toString();</span><br><span class="line">        System.out.println(str1.intern() == str1);</span><br><span class="line">        </span><br><span class="line">        String str2 = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;ja&quot;</span>).append(<span class="string">&quot;va&quot;</span>).toString();</span><br><span class="line">        System.out.println(str2.intern() == str2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在JDK6中，会输出两个false，而在JDK7中，则会得到一个true一个false。在JDK6中，intern()方法会将首次遇到的字符串复制进常量池中保存，因此str1.intern()返回的是常量池中的引用，而在str1指向的对象是在堆中，因此返回false，这里解释一下，”java”这个字符串是在加载sum.misc.Version这个类的时候被加载进常量池的，因此下面会返回true。</p>
+<p>在JDK7中，常量池被移到了堆中，因此只需要记录首次出现该字面量的字符串的引用地址即可，也就是堆中的地址，因此两个都是true。</p>
+]]></content>
+      <tags>
+        <tag>Java基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>jdk1.8hashmap解析02</title>
     <url>/2021/11/24/jdk1-8hashmap%E8%A7%A3%E6%9E%9002/</url>
     <content><![CDATA[<h3 id="HashMap扩容机制"><a href="#HashMap扩容机制" class="headerlink" title="HashMap扩容机制"></a>HashMap扩容机制</h3><p>前情回顾：<a href="https://blog.csdn.net/weixin_46180709/article/details/121320440">谈谈jdk1.8的HashMap 01</a><br>上次我们把put方法讲完了，有一个方法我没有细说，那就是resize()方法，这个方法我个人认为是HashMap最精华但是却最难理解的地方，接下来我们慢慢讲解。</p>
@@ -215,24 +233,6 @@
 ]]></content>
       <tags>
         <tag>java集合类</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>intern()方法</title>
-    <url>/2021/11/25/intern()%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>这两天被一个问题困扰住：intern()的作用，这里解释一下。</p>
-<h2 id="JDK1-6"><a href="#JDK1-6" class="headerlink" title="JDK1.6"></a>JDK1.6</h2><p>在JDK1.6中，intern()是这样执行的：假设现在有”a”.intern()，就会先去找常量池中寻找有没有字面量为a的字符串，有的话直接返回该字符串在常量池的地址，没有的话就先创建一个，然后再返回在常量池中的地址。</p>
-<h2 id="JDK1-7"><a href="#JDK1-7" class="headerlink" title="JDK1.7"></a>JDK1.7</h2><p>在JDK1.7中，intern()是这样执行的：同样是上面的例子，当在常量池寻找不到时，就会记录<strong>首次出现</strong>该字面量的字符串的引用地址，然后返回该引用地址，如果有的话就直接返回。</p>
-<h2 id="For-Example"><a href="#For-Example" class="headerlink" title="For Example"></a>For Example</h2><p>举个例子周志明的《深入理解Java虚拟机》的例子：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        String str1 = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;计算机&quot;</span>).append(<span class="string">&quot;软件&quot;</span>).toString();</span><br><span class="line">        System.out.println(str1.intern() == str1);</span><br><span class="line">        </span><br><span class="line">        String str2 = <span class="keyword">new</span> StringBuilder(<span class="string">&quot;ja&quot;</span>).append(<span class="string">&quot;va&quot;</span>).toString();</span><br><span class="line">        System.out.println(str2.intern() == str2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>在JDK6中，会输出两个false，而在JDK7中，则会得到一个true一个false。在JDK6中，intern()方法会将首次遇到的字符串复制进常量池中保存，因此str1.intern()返回的是常量池中的引用，而在str1指向的对象是在堆中，因此返回false，这里解释一下，”java”这个字符串是在加载sum.misc.Version这个类的时候被加载进常量池的，因此下面会返回true。</p>
-<p>在JDK7中，常量池被移到了堆中，因此只需要记录首次出现该字面量的字符串的引用地址即可，也就是堆中的地址，因此两个都是true。</p>
-]]></content>
-      <tags>
-        <tag>Java基础</tag>
       </tags>
   </entry>
   <entry>
